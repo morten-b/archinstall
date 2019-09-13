@@ -21,6 +21,7 @@ passwd
 
 # Add real user remove -s flag if you don't whish to use zsh
 useradd -m -g users -G wheel -s /usr/bin/fish morten
+echo -e ">>  USER PASSWORD"
 passwd morten
 
 grub-install
@@ -41,13 +42,14 @@ nano /etc/mkinitcpio.conf
 mkinitcpio -p linux
 
 # Enable sudo for user
-sed -i 's/#%wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
+sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 
 # Make keyboard layout persistent
 localectl set-x11-keymap dk
 
 # Install Yay
 sudo pacman -Syu
+su - morten
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
