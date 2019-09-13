@@ -50,7 +50,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 localectl set-x11-keymap dk
 
 # Install Yay
-sudo pacman -Syu
+pacman -Syu
 su - morten
 git clone https://aur.archlinux.org/yay.git
 cd yay
