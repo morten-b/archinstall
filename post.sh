@@ -3,7 +3,7 @@ cd yay
 makepkg -si
 
 # Install yadm
-yay -S yadm-git
+yay -S --noconfirm yadm-git
 
 # Pull settings from git
 yadm clone https://github.com/morten-b/dotfiles.git
