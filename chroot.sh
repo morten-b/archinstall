@@ -43,7 +43,7 @@ localectl set-x11-keymap dk
 # Install Yay
 pacman -Syu
 
-echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/post.sh)"
+echo -e "bash <(curl -S https://raw.githubusercontent.com/morten-b/archinstall/master/post.sh)"
 echo -e "su - morten"
 echo -e "nano /etc/mkinitcpio.conf"
 
