@@ -24,8 +24,6 @@ useradd -m -g users -G wheel -s /usr/bin/fish morten
 echo -e ">>  USER PASSWORD"
 passwd morten
 
-grub-install
-
 # Configure mkinitcpio with modules needed for the initrd image
 echo -e ""
 echo -e ">>  EDIT MKINITCPIO.CONF"
@@ -40,6 +38,10 @@ nano /etc/mkinitcpio.conf
 
 # Regenerate initrd image
 mkinitcpio -p linux
+
+# Setup grub
+grub-install
+sed -i 's/GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX="cryptdevice=/dev/sdX3:luks:allow-discards"/g' /etc/default/grub
 
 # Enable sudo for user
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
