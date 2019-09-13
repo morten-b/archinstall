@@ -60,5 +60,5 @@ genfstab -pU /mnt >> /mnt/etc/fstab
 
 echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
 
-arch-chroot /mnt /bin/bash
 echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/chroot.sh)"
+arch-chroot /mnt /bin/bash
