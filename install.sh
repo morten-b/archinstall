@@ -1,5 +1,16 @@
 #!/bin/bash
 
+
+#### Password prompts ####
+bootstrapper_dialog --title "Disk encryption" --passwordbox "Please enter a strong passphrase for the full disk encryption.\n" 8 60
+encryption_passphrase="$DIALOG_RESULT"
+
+bootstrapper_dialog --title "Root password" --passwordbox "Please enter a strong password for the root user.\n" 8 60
+root_password="$DIALOG_RESULT
+
+bootstrapper_dialog --title "user password" --passwordbox "Please enter a strong password for the root user.\n" 8 60
+user_password="$DIALOG_RESULT
+
 echo -e "\nFormatting disk...\n$HR"
 
 # disk prep
@@ -25,8 +36,8 @@ mkfs.vfat -F32 /dev/sda1
 mkfs.ext2 /dev/sda2
 
 # Setup the encryption of the system
-cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3
-cryptsetup luksOpen /dev/sda3 luks
+printf "%s" "$encryption_passphrase" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
+printf "%s" "$encryption_passphrase" | cryptsetup luksOpen /dev/sda3 luks -
 
 # Create encrypted partitions
 pvcreate /dev/mapper/luks
@@ -83,14 +94,12 @@ echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo LANGUAGE=en_US >> /etc/locale.conf
 echo LC_ALL=C >> /etc/locale.conf
 
-echo -e ">>  ROOT PASSWORD"
 # Set password for root
-passwd
+echo "root:${root_password}" | chpasswd
 
-# Add real user remove -s flag if you don't whish to use zsh
+# Add real user
 useradd -m -g users -G wheel -s /usr/bin/fish morten
-echo -e ">>  USER PASSWORD"
-passwd morten
+echo "root:${user_password}" | chpasswd morten
 
 # Configure mkinitcpio with modules needed for the initrd image
 sed -i 's/^MODULES.*/MODULES=(ext4)/' /etc/mkinitcpio.conf
@@ -122,10 +131,6 @@ yay -S --noconfirm yadm-git
 
 # Pull settings from git
 yadm clone https://github.com/morten-b/dotfiles.git
-
-echo -e "bash <(curl -S https://raw.githubusercontent.com/morten-b/archinstall/master/post.sh)"
-echo -e "su - morten"
-echo -e "nano /etc/mkinitcpio.conf"
 
 # Exit new system and go into the cd shell
 exit
