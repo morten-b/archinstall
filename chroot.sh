@@ -25,16 +25,8 @@ echo -e ">>  USER PASSWORD"
 passwd morten
 
 # Configure mkinitcpio with modules needed for the initrd image
-echo -e ""
-echo -e ">>  EDIT MKINITCPIO.CONF"
-echo -e "    --------------------"
-echo -e ""
-echo -e "Add \'encrypt\' and \'lvm2\' to HOOKS before filesystems"
-echo -e "Add \'ext4\' to MODULES"
-echo -e ""
-echo -n "Press [ENTER] to continue..."
-read ret
-nano /etc/mkinitcpio.conf
+sed -i 's/^MODULES.*/MODULES=(ext4)/' /etc/mkinitcpio.conf
+sed -i 's/^HOOKS.*/HOOKS="base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck"/' /etc/mkinitcpio.conf
 
 # Regenerate initrd image
 mkinitcpio -p linux
