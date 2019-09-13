@@ -48,7 +48,7 @@ mount /dev/sda1 /mnt/boot/efi
 
 echo -e "\nAdjust mirrors...\n$HR"
 #Adjust mirrors
-pacman -Sy reflector
+pacman -Sy --noconfirm reflector
 reflector --verbose --latest 5 --country Denmark --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\nInstalling...\n$HR"
