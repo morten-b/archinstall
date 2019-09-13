@@ -124,4 +124,15 @@ yadm clone https://github.com/morten-b/dotfiles.git
 echo -e "bash <(curl -S https://raw.githubusercontent.com/morten-b/archinstall/master/post.sh)"
 echo -e "su - morten"
 echo -e "nano /etc/mkinitcpio.conf"
+
+# Exit new system and go into the cd shell
+exit
+
 EOF
+
+# Unmount all partitions
+umount -R /mnt
+swapoff -a
+
+# Reboot into the new system, don't forget to remove the cd/usb
+reboot
