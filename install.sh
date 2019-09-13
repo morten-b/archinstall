@@ -2,14 +2,9 @@
 
 
 #### Password prompts ####
-bootstrapper_dialog --title "Disk encryption" --passwordbox "Please enter a strong passphrase for the full disk encryption.\n" 8 60
-encryption_passphrase="$DIALOG_RESULT"
-
-bootstrapper_dialog --title "Root password" --passwordbox "Please enter a strong password for the root user.\n" 8 60
-root_password="$DIALOG_RESULT
-
-bootstrapper_dialog --title "user password" --passwordbox "Please enter a strong password for the real user.\n" 8 60
-user_password="$DIALOG_RESULT
+dialog --inputbox "Encrypt password:" 8 60 2>$encrypt
+dialog --inputbox "Root password:" 8 60 2>$root
+dialog --inputbox "User password:" 8 60 2>$root
 
 # disk prep
 sgdisk -Z /dev/sda # zap all on disk
@@ -34,8 +29,8 @@ mkfs.vfat -F32 /dev/sda1
 mkfs.ext2 /dev/sda2
 
 # Setup the encryption of the system
-printf "%s" "$encryption_passphrase" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
-printf "%s" "$encryption_passphrase" | cryptsetup luksOpen /dev/sda3 luks -
+printf "%s" "$encrypt" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
+printf "%s" "$encrypt" | cryptsetup luksOpen /dev/sda3 luks -
 
 # Create encrypted partitions
 pvcreate /dev/mapper/luks
@@ -87,11 +82,11 @@ echo LANGUAGE=en_US >> /etc/locale.conf
 echo LC_ALL=C >> /etc/locale.conf
 
 # Set password for root
-echo "root:${root_password}" | chpasswd
+echo "root:${root}" | chpasswd
 
 # Add real user
 useradd -m -g users -G wheel -s /usr/bin/fish morten
-echo "root:${user_password}" | chpasswd morten
+echo "root:${user}" | chpasswd morten
 
 # Configure mkinitcpio with modules needed for the initrd image
 sed -i 's/^MODULES.*/MODULES=(ext4)/' /etc/mkinitcpio.conf
