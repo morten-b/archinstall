@@ -8,10 +8,8 @@ encryption_passphrase="$DIALOG_RESULT"
 bootstrapper_dialog --title "Root password" --passwordbox "Please enter a strong password for the root user.\n" 8 60
 root_password="$DIALOG_RESULT
 
-bootstrapper_dialog --title "user password" --passwordbox "Please enter a strong password for the root user.\n" 8 60
+bootstrapper_dialog --title "user password" --passwordbox "Please enter a strong password for the real user.\n" 8 60
 user_password="$DIALOG_RESULT
-
-echo -e "\nFormatting disk...\n$HR"
 
 # disk prep
 sgdisk -Z /dev/sda # zap all on disk
@@ -57,25 +55,19 @@ mount /dev/sda2 /mnt/boot
 mkdir /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
 
-echo -e "\nAdjust mirrors...\n$HR"
 #Adjust mirrors
 pacman -Sy --noconfirm reflector
 reflector --verbose --latest 5 --country Denmark --sort rate --save /etc/pacman.d/mirrorlist
 
-echo -e "\nInstalling...\n$HR"
 # Install the system
 pacstrap /mnt base base-devel grub-efi-x86_64 fish git efibootmgr dialog wpa_supplicant
 
 # 'install' fstab
 genfstab -pU /mnt >> /mnt/etc/fstab
-
 echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
 
-echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/chroot.sh)"
-echo -e "arch-chroot /mnt /bin/bash"
-
+# Setup system
 arch-chroot /mnt /bin/bash <<EOF
-
 
 # Setup system clock
 ln -sf /usr/share/zoneinfo/Europe/Copenhagen /etc/localtime
