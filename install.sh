@@ -59,3 +59,6 @@ pacstrap /mnt base base-devel grub-efi-x86_64 fish git efibootmgr dialog wpa_sup
 genfstab -pU /mnt >> /mnt/etc/fstab
 
 echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
+
+arch-chroot /mnt /bin/bash
+bash <(curl -S https://raw.githubusercontent.com/morten-b/archinstall/master/chroot.sh)
