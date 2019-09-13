@@ -3,7 +3,7 @@
 
 #### Password prompts ####
 echo "Encrypt password:"
-read encrypt
+read crypt
 echo "Root password:" 
 read root
 echo "User password:"
@@ -32,8 +32,8 @@ mkfs.vfat -F32 /dev/sda1
 mkfs.ext2 /dev/sda2
 
 # Setup the encryption of the system
-printf "%s" "$encrypt" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
-printf "%s" "$encrypt" | cryptsetup luksOpen /dev/sda3 luks -
+printf "%s" "$crypt" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
+printf "%s" "$crypt" | cryptsetup luksOpen /dev/sda3 luks -
 
 # Create encrypted partitions
 pvcreate /dev/mapper/luks
