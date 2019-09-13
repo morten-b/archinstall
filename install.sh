@@ -42,9 +42,9 @@ mkswap /dev/mapper/vg0-swap
 mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
 swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
 mkdir /mnt/boot
-mount /dev/sdX2 /mnt/boot
+mount /dev/sda2 /mnt/boot
 mkdir /mnt/boot/efi
-mount /dev/sdX1 /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
 
 echo -e "\nAdjust mirrors...\n$HR"
 # Adjust mirrors
