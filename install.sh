@@ -2,9 +2,12 @@
 
 
 #### Password prompts ####
-dialog --inputbox "Encrypt password:" 8 60 2>$encrypt
-dialog --inputbox "Root password:" 8 60 2>$root
-dialog --inputbox "User password:" 8 60 2>$root
+echo "Encrypt password:"
+read encrypt
+echo "Root password:" 
+read root
+echo "User password:"
+read user
 
 # disk prep
 sgdisk -Z /dev/sda # zap all on disk
