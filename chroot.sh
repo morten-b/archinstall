@@ -44,5 +44,6 @@ localectl set-x11-keymap dk
 pacman -Syu
 
 echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/post.sh)"
+echo -e "su - morten"
+echo -e "nano /etc/mkinitcpio.conf"
 
-su - morten
