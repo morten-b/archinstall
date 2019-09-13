@@ -50,6 +50,7 @@ localectl set-x11-keymap dk
 
 # Install Yay
 pacman -Syu
-su - morten
 
-source <(curl -S https://github.com/morten-b/archinstall/edit/master/chroot.sh)
+echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/post.sh)"
+
+su - morten
