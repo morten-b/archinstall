@@ -46,9 +46,13 @@ mount /dev/sdX2 /mnt/boot
 mkdir /mnt/boot/efi
 mount /dev/sdX1 /mnt/boot/efi
 
+echo -e "\nAdjust mirrors...\n$HR"
 # Adjust mirrors
-MISSING
+pacman -Syu
+pacman -S reflector
+reflector —verbose —latest 5 —country ‘Denmark’ —sort rate —save /etc/pacman.d/mirrorlist
 
+echo -e "\nInstalling...\n$HR"
 # Install the system
 pacstrap /mnt base base-devel grub-efi-x86_64 fish git efibootmgr dialog wpa_supplicant
 
