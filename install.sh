@@ -63,6 +63,9 @@ echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
 echo -e "bash <(curl -S https://github.com/morten-b/archinstall/edit/master/chroot.sh)"
 echo -e "arch-chroot /mnt /bin/bash"
 
+arch-chroot /mnt /bin/bash <<EOF
+
+
 # Setup system clock
 ln -sf /usr/share/zoneinfo/Europe/Copenhagen /etc/localtime
 hwclock --systohc --utc
@@ -101,7 +104,6 @@ grub-install
 sed -i 's|^GRUB_CMDLINE_LINUX="".*|GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda3:luks:allow-discards"|' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-arch-chroot /mnt /bin/bash <<EOF
 # Enable sudo for user
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 
