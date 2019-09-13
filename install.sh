@@ -47,16 +47,15 @@ mkdir /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
 
 echo -e "\nAdjust mirrors...\n$HR"
-# Adjust mirrors
-#pacman -Syu
-#pacman -S reflector
-#reflector —verbose —latest 5 —country ‘Denmark’ —sort rate —save /etc/pacman.d/mirrorlist
+#Adjust mirrors
+pacman -Sy reflector
+reflector --verbose --latest 5 --country Denmark --sort rate --save /etc/pacman.d/mirrorlist
 
-#echo -e "\nInstalling...\n$HR"
+echo -e "\nInstalling...\n$HR"
 # Install the system
-#pacstrap /mnt base base-devel grub-efi-x86_64 fish git efibootmgr dialog wpa_supplicant
+pacstrap /mnt base base-devel grub-efi-x86_64 fish git efibootmgr dialog wpa_supplicant
 
 # 'install' fstab
-#genfstab -pU /mnt >> /mnt/etc/fstab
+genfstab -pU /mnt >> /mnt/etc/fstab
 
-#echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
+echo "tmpfs	/tmp	tmpfs	defaults,noatime,mode=1777	0	0" >> /mnt/etc/fstab
