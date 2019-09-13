@@ -89,7 +89,7 @@ echo "root:${root}" | chpasswd
 
 # Add real user
 useradd -m -g users -G wheel -s /usr/bin/fish morten
-echo "root:${user}" | chpasswd morten
+echo "user:${user}" | passwd morten
 
 # Configure mkinitcpio with modules needed for the initrd image
 sed -i 's/^MODULES.*/MODULES=(ext4)/' /etc/mkinitcpio.conf
