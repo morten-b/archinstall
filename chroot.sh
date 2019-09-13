@@ -41,8 +41,7 @@ mkinitcpio -p linux
 
 # Setup grub
 grub-install
-sed -i 's/GRUB_CMDLINE_LINUX/GRUB_CMDLINE_LINUX="cryptdevice=/dev/sdX3:luks:allow-discards"/g' /etc/default/grub
-
+sed -i 's|^GRUB_CMDLINE_LINUX="".*|GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda3:luks:allow-discards"|' /etc/default/grub
 # Enable sudo for user
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 
@@ -53,4 +52,4 @@ localectl set-x11-keymap dk
 pacman -Syu
 su - morten
 
-source https://github.com/morten-b/archinstall/edit/master/chroot.sh
+source <(curl -S https://github.com/morten-b/archinstall/edit/master/chroot.sh)
