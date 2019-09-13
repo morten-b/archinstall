@@ -52,12 +52,3 @@ localectl set-x11-keymap dk
 # Install Yay
 pacman -Syu
 su - morten
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-
-# Install yadm
-yay -S yadm-git
-
-# Pull settings from git
-yadm clone https://github.com/morten-b/dotfiles.git
