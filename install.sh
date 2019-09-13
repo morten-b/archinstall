@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #### Password prompts ####
 echo "Encrypt password:"
 read crypt
@@ -107,20 +106,20 @@ grub-mkconfig -o /boot/grub/grub.cfg
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 
 # Make keyboard layout persistent
-# localectl set-x11-keymap dk
+localectl set-keymap dk
 
 # Install Yay
 pacman -Syu
 
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+#git clone https://aur.archlinux.org/yay.git
+#cd yay
+#makepkg -si
 
 # Install yadm
-yay -S --noconfirm yadm-git
+#yay -S --noconfirm yadm-git
 
 # Pull settings from git
-yadm clone https://github.com/morten-b/dotfiles.git
+#yadm clone https://github.com/morten-b/dotfiles.git
 
 # Exit new system and go into the cd shell
 exit
@@ -132,4 +131,4 @@ umount -R /mnt
 swapoff -a
 
 # Reboot into the new system, don't forget to remove the cd/usb
-reboot
+#reboot
