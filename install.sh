@@ -84,11 +84,11 @@ echo LANGUAGE=en_US >> /etc/locale.conf
 echo LC_ALL=C >> /etc/locale.conf
 
 # Set password for root
-echo "root:${root}" | chpasswd
+echo "${root}" | passwd --stdin root
 
 # Add real user
 useradd -m -g users -G wheel -s /usr/bin/fish morten
-echo "user:${user}" | passwd morten
+echo "${root}" | passwd --stdin morten
 
 # Configure mkinitcpio with modules needed for the initrd image
 sed -i 's/^MODULES.*/MODULES=(ext4)/' /etc/mkinitcpio.conf
@@ -108,19 +108,6 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers
 # Make keyboard layout persistent
 localectl set-keymap dk
 
-# Install Yay
-pacman -Syu
-
-#git clone https://aur.archlinux.org/yay.git
-#cd yay
-#makepkg -si
-
-# Install yadm
-#yay -S --noconfirm yadm-git
-
-# Pull settings from git
-#yadm clone https://github.com/morten-b/dotfiles.git
-
 # Exit new system and go into the cd shell
 exit
 
@@ -131,4 +118,4 @@ umount -R /mnt
 swapoff -a
 
 # Reboot into the new system, don't forget to remove the cd/usb
-#reboot
+reboot
