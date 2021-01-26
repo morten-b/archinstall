@@ -12,17 +12,17 @@ read user
 sgdisk -Z /dev/sda # zap all on disk
 sgdisk -a 2048 -o /dev/sda # new gpt disk 2048 alignment
 
-# create partitions
+echo "create partitions"
 sgdisk -n 1:0:+100M /dev/sda # partition 1 (EFI), default start block, 200MB
 sgdisk -n 2:0:+250M /dev/sda # partition 2 (Boot), default start block, 200MB
 sgdisk -n 3:0:0 /dev/sda # partition 3, (Encrypted), default start, remaining space
 
-# set partition types
+echo "set partition types"
 sgdisk -t 1:ef00 /dev/sda
 sgdisk -t 2:8300 /dev/sda
 sgdisk -t 3:8300 /dev/sda
 
-# label partitions
+echo "label partitions"
 sgdisk -c 1:"EFI" /dev/sda
 sgdisk -c 2:"BOOT" /dev/sda
 sgdisk -c 3:"LUKS" /dev/sda
@@ -30,21 +30,21 @@ sgdisk -c 3:"LUKS" /dev/sda
 mkfs.vfat -F32 /dev/sda1
 mkfs.ext2 /dev/sda2
 
-# Setup the encryption of the system
+echo "Setup the encryption of the system"
 printf "%s" "$crypt" | cryptsetup -c aes-xts-plain64 -y --use-random luksFormat /dev/sda3 -
 printf "%s" "$crypt" | cryptsetup luksOpen /dev/sda3 luks -
 
-# Create encrypted partitions
+echo "Create encrypted partitions"
 pvcreate /dev/mapper/luks
 vgcreate vg0 /dev/mapper/luks
 lvcreate --size 8G vg0 --name swap
 lvcreate -l +100%FREE vg0 --name root
 
-# Create filesystems on encrypted partitions
+echo "Create filesystems on encrypted partitions"
 mkfs.ext4 /dev/mapper/vg0-root
 mkswap /dev/mapper/vg0-swap
 
-# Mount the new system 
+echo "Mount the new system"
 mount /dev/mapper/vg0-root /mnt # /mnt is the installed system
 swapon /dev/mapper/vg0-swap # Not needed but a good thing to test
 mkdir /mnt/boot
